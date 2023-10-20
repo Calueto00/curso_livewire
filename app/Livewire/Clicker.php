@@ -7,11 +7,16 @@ use Livewire\Component;
 
 class Clicker extends Component
 {
-    public $name = "secrete name";
-    public $email;
-    public $password;
+    public $name ='';
+    public $email ='';
+    public $password ='';
 
     public function create(){
+        $this->validate([
+            'name'=>'required|min:3|max:50',
+            'email'=>'required|unique:users',
+            'password'=>'required|min:5'
+        ]);
         User::create([
             'name'=>$this->name,
             'email'=>$this->email,

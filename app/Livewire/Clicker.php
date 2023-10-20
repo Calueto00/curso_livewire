@@ -22,7 +22,11 @@ class Clicker extends Component
             'email'=>$this->email,
             'password'=>$this->password
         ]);
+
+        request()->session()->flash('success','User created successfully');
+        $this->reset(['name','email','password']);
     }
+    
     public function render()
     {
             $user = User::all();

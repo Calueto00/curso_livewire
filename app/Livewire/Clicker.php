@@ -25,6 +25,7 @@ class Clicker extends Component
     public $image;
 
     public function create(){
+        sleep(2);
        $validated = $this->validate();
             if($this->image){
               $validated['image'] = $this->image->store('uploads','public');

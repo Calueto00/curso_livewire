@@ -37,14 +37,19 @@
         {{$message}}
     </span>
 @enderror
+@if ($image)
+            <img src="{{$image->temporaryUrl()}}" alt="" class="rounded w-10  h-10 mt-5 block">
+    @endif
 
     <div wire:loading wire:target="image">
         <span class="text-green-500">Uploading...</span>
     </div>
 
-        <button class="block mt-3 px-4 py-2 bg-teal-500 text-white font-semibold rounded hover:bg-teal-600" >Create</button>
+    <div wire:loading>
+        <span class="text-green-500">Sending</span>
+    </div>
+
+        <button wire:loading.remove class="block mt-3 px-4 py-2 bg-teal-500 text-white font-semibold rounded hover:bg-teal-600" >Create</button>
     </form>
-    @if ($image)
-            <img src="{{$image->temporaryUrl()}}" alt="" class="rounded w-10  h-10 mt-5 block">
-    @endif
+
 </div>

@@ -3,36 +3,40 @@
 namespace App\Livewire;
 
 use App\Models\User;
+use Illuminate\Contracts\Session\Session;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
 class Clicker extends Component
 {
-    use WithPagination;
+    use WithFileUploads;
 
+    #[Rule('required|min:3|max:50')]
     public $name ='';
+    #[Rule('required|email|max:255|unique:users')]
     public $email ='';
+
+    #[Rule('required|min:5')]
     public $password ='';
 
-    public function create(){
-        $this->validate([
-            'name'=>'required|min:3|max:50',
-            'email'=>'required|unique:users',
-            'password'=>'required|min:5'
-        ]);
-        User::create([
-            'name'=>$this->name,
-            'email'=>$this->email,
-            'password'=>$this->password
-        ]);
+    #[Rule('nullable|sometimes|image|max:1024')]
+    public $image;
 
-      //  request()->session()->flash('success','User created successfully');
-        $this->reset(['name','email','password']);
+    public function create(){
+       $validated = $this->validate();
+            if($this->image){
+              $validated['image'] = $this->image->store('uploads','public');
+            }
+        User::create($validated);
+
+      session()->flash('success', 'User created');
+        $this->reset(['name','email','password','image']);
     }
 
     public function render()
     {
-            $user = User::paginate(5);
-        return view('livewire.clicker',compact('user'));
+        return view('livewire.clicker');
     }
 }
